@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react'
 import sublinks from './data'
+
 const AppContext = React.createContext();
 
-const AppProvider = ({ children }) => {
+export const AppProvider = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+    const [location, setLocation] = useState({});
 
     const openSidebar = () => {
         setIsSidebarOpen(true);
@@ -14,7 +16,8 @@ const AppProvider = ({ children }) => {
         setIsSidebarOpen(false);
     }
 
-    const openSubmenu = () => {
+    const openSubmenu = (text, coordinates) => {
+        setLocation(coordinates);
         setIsSubmenuOpen(true);
     }
 
@@ -28,7 +31,8 @@ const AppProvider = ({ children }) => {
         openSidebar,
         openSubmenu,
         closeSidebar,
-        closeSubmenu
+        closeSubmenu,
+        location,
     }}>
         {children}
     </AppContext.Provider>
@@ -38,5 +42,3 @@ const AppProvider = ({ children }) => {
 export const useGlobalContext = () => {
     return useContext(AppContext);
 }
-
-export { AppContext, AppProvider };

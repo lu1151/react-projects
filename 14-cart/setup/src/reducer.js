@@ -5,7 +5,7 @@ const reducer = (state, action) => {
     }
     if (action.type === "REMOVE") {
         return {
-            ...state, cart: state.cart.filter((cartItems) => cartItems.id !== action.payload),
+            ...state, cart: state.cart.filter((cartItem) => cartItem.id !== action.payload),
         }
     }
     if (action.type === "INCREASE") {
@@ -30,15 +30,19 @@ const reducer = (state, action) => {
         let { total, amount } = state.cart.reduce(
             (cartTotal, cartItem) => {
                 const { price, amount } = cartItem;
+                const itemTotal = price * amount;
                 cartTotal.amount += amount;
+                cartTotal.total += itemTotal;
                 return cartTotal
             },
             {
                 total: 0,
                 amount: 0,
-            })
-        return { ...state, total, amount };
+            }
+        )
+        total = parseFloat(total.toFixed(2));
 
+        return { ...state, total, amount };
     }
     return state;
 }
